@@ -47,6 +47,7 @@ class OpenAI(BaseOpenAI):
     def __init__(
         self,
         api_token: Optional[str] = None,
+        LLM: str = "gpt-3.5-turbo"
         **kwargs,
     ):
         """
@@ -57,7 +58,8 @@ class OpenAI(BaseOpenAI):
 
         Returns: Response generated from OpenAI API
         """
-
+        assert LLM in _supported_chat_models or LLM in _supported_completion_models, "Model not supported"
+        model: str = LLM
         self.api_token = api_token or os.getenv("OPENAI_API_KEY") or None
         if self.api_token is None:
             raise APIKeyNotFoundError("OpenAI API key is required")
